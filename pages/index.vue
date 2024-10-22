@@ -2,7 +2,7 @@
   <div>
     <MenuNav />
     <UContainer class="mt-24">
-      <Form />
+      <MealGenerationForm />
       <TabWeek />
     </UContainer>
   </div>
