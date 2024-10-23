@@ -1,7 +1,7 @@
 <template>
-  <nav class="flex justify-between items-center">
-    <h1 class="">ProjectX</h1>
-    <UHorizontalNavigation :links="links" class="bg-slate-300 w-1/4" />
+  <nav class="flex justify-between items-center mt-2">
+    <h1 class="ml-28">ProjectX</h1>
+    <UHorizontalNavigation :links="links" class="w-1/4" />
   </nav>
 </template>
 
