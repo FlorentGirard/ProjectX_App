@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
+import type {SelectIngredientType} from "~/common/types/types";
 
 const options = [
   { label: "1 Semaine", value: 1 },
@@ -14,23 +15,34 @@ const ingredientList = [
   { label: "Riz", value: "rice" },
 ];
 
+// Définition du schéma pour un ingrédient
+const SelectIngredientSchema = z.object({
+  ingredient: z.string().min(1),
+  limit: z.number(),
+});
+
 const schema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Must be at least 8 characters"),
+  nbrSemaine: z.string(),
+  selectIngredient: z.array(SelectIngredientSchema).optional()
 });
 
 type Schema = z.output<typeof schema>;
 
+type stateType = {
+  nbrSemaine: undefined | number
+  selectIngredient: SelectIngredientType[]
+}
+
 const state = reactive({
-  email: undefined,
-  password: undefined,
   nbrSemaine: undefined,
-  selectIngredient: [],
+  selectIngredient: [] as SelectIngredientType[],
 });
 
-const addIngredientLimit = () => {
-  state.selectIngredient.push({});
-  console.log(state.selectIngredient.length);
+const addIngredientLimit = () => {  state.selectIngredient.push({
+  ingredient: "",
+  limit: 0
+});
+
 };
 
 const removeIngredientLimit = () => {
@@ -39,6 +51,7 @@ const removeIngredientLimit = () => {
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with data
+  console.log('envoyé')
   console.log(event.data);
 }
 </script>
@@ -76,12 +89,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         :key="index"
       >
         <USelect
-          v-model="state.selectIngredient.ingredient"
+          v-model="ingredient.ingredient"
           placeholder="Sélectionner ingrédient"
           :options="ingredientList"
           class="w-1/2"
         />
-        <UInput v-model="state.selectIngredient.limit" class="w-1/2 ml-2" />
+        <UInput v-model="ingredient.limit" class="w-1/2 ml-2" />
         <UButton
           icon="i-heroicons-trash"
           size="sm"
